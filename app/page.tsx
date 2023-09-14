@@ -1,11 +1,15 @@
+import Listado from "@/components/Listado";
 import Product from "@/components/Product";
-
+import Header from "@/components/Header";
 
 export default function Home() {
+ 
+  
   return (
-    <main className="flex flex-col h-screen bg-zinc-300 items-center justify-center ">
-      <h1 className="text-3xl font-medium animate-pulse">Productos</h1>
+    <main className="flex flex-col  items-center justify-center  p-10">
+     <Header></Header>
     <Product></Product>
+    <Listado></Listado>
     </main>
   )
 }
