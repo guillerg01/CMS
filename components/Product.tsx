@@ -18,8 +18,15 @@ type Inputs = {
 };
 
 const Product = () => {
-  const [cookies, setCookie] = useCookies(['token']);
-  let decoded :any= jwt_decode(cookies.token)
+  const [cookies, setCookie,removeCookie] = useCookies(['token']);
+  const[decode,setDecode]= useState({uid:''})
+  useEffect(()=>{try {
+    setDecode(jwt_decode(cookies.token))
+  } catch (error) {
+    console.log(error);
+    
+  } },[cookies.token])
+  
  const[restablecer,setRestablecer] = useState(false)
 
   const URL = "http://localhost:4000/api/productos";
@@ -43,7 +50,7 @@ const Product = () => {
         }
       )
       .then((response) => {
-        console.log(response);
+        console.log('respuesta: ' +response);
       });
   };
 
@@ -54,9 +61,14 @@ const Product = () => {
     const handleClick = ()=>{
       setRestablecer(!restablecer)
     }
+    const handleClickCerrar =()=>{
+      removeCookie('token');
+    
+      
+    }
   return (<>
     <div className="shadow-md mt-5 bg-zinc-300/60  flex flex-col-2 shadow-stone-400 w-[80%]  h-[80%] p-24">
-      <h4 className="absolute top-32 left-[50%] underline decoration-slate-700">Id de usuario: {decoded.uid}</h4>
+      <h4 className="absolute top-32 left-[50%] underline decoration-slate-700">Id de usuario: {decode.uid}</h4>
       <div>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -88,6 +100,13 @@ const Product = () => {
             className="bg-stone-600 rounded-md p-2  hover:scale-105 shadow-md hover:shadow-xl"
           >
             Submit
+          </button>
+          <button
+          onClick={handleClickCerrar}
+            type="submit"
+            className="bg-stone-600 mx-4 rounded-md p-2  hover:scale-105 shadow-md hover:shadow-xl"
+          >
+            Cerrar Session
           </button>
         </form>
       </div>

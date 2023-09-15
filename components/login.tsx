@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Checkbox, Label, Modal, TextInput ,DarkThemeToggle} from 'flowbite-react';
-import { useState ,useContext} from 'react';
+import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 import { useCookies } from 'react-cookie';
@@ -32,15 +32,15 @@ const handleSubmitLogin = ({}) => {
       .then((response) => {
         
         setCookie('token', `${response.data.token}`, { path: '/' });
-         console.log(cookies.token);
+         console.log('token: ' +cookies.token);
          
          setUser("")
          SetPassword("")
-        }).catch((e)=>{console.log(e);
+        }).catch((e)=>{console.log('error: ' +e);
         })
 
   };
-
+  
   const handleSubmitRegister = () => {
     
   
@@ -54,15 +54,20 @@ const handleSubmitLogin = ({}) => {
       .then((response) => {
         
         setCookie('token', `${response.data.token}`, { path: '/' });
-         console.log(cookies.token);
+         console.log('token: '+cookies.token);
          setOpenModal("none")
          setUser("")
          SetPassword("")
-        }).catch((e)=>{console.log(e)})}
+        }).catch((e)=>{console.log('error: ' + e)})}
 
 
 
+useEffect(()=>{
 
+  if(cookies.token===undefined){
+    setOpenModal('form-elements')
+  }
+},[cookies.token])
 
 
 const handleClickregister = ()=>{
@@ -74,7 +79,7 @@ const handleClickregister = ()=>{
 
 
 
-cookies.token? '': setOpenModal('form-elements')
+
   return (
     <>
       
