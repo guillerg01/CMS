@@ -18,7 +18,13 @@ type Inputs = {
 };
 
 const Product = () => {
-  const [cookies, setCookie,removeCookie] = useCookies(['token']);
+
+// const[nombre,setNombre] = useState('')
+// const[cantidad,setCantidad] = useState(0)
+// const[descripcion,setDescripcion] = useState('')
+// const[precio,setPrecio] = useState(0)
+
+  const [cookies, setCookie,removeCookie] = useCookies(['token','idprod']);
   const[decode,setDecode]= useState({uid:''})
   useEffect(()=>{try {
     setDecode(jwt_decode(cookies.token))
@@ -29,9 +35,24 @@ const Product = () => {
   
  const[restablecer,setRestablecer] = useState(false)
 
+ const urlget = "http://localhost:4000/api/productos";
+  useEffect(()=>{
+         axios.get(urlget, {
+            headers: {
+                "Content-Type": "application/json",
+                "x-token": `${cookies.token}`
+            },
+        })
+        .then((response) => {
+           
+            console.log(response);
+        });
+  },[cookies.idprod])
+
+
   const URL = "http://localhost:4000/api/productos";
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit,setValue } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const resp = axios
       .post(
@@ -51,6 +72,10 @@ const Product = () => {
       )
       .then((response) => {
         console.log('respuesta: ' +response);
+        setValue('nombre','');
+        setValue('cantidad',0);
+        setValue('descripcion','');
+        setValue('precio',0);
       });
   };
 
@@ -72,23 +97,29 @@ const Product = () => {
       <div>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <input
+          
             type="text"
             {...register("nombre")}
             className="bg-transparent  border-transparent outline-none  border-b-zinc-500 shadow-lg hover:shadow-2xl   rounded-sm p-1 hover:scale-[1.02] transition-all w-[90%] h-10 hover:border-b-zinc-500 border-2 "
             placeholder="Nombre"
           ></input>
           <input
+           
+           
             {...register("cantidad")}
             type="number"
             className="bg-transparent border-transparent outline-none  border-b-zinc-500 shadow-lg hover:shadow-2xl   rounded-sm p-1 hover:scale-[1.02] transition-all w-[90%] h-10 hover:border-b-zinc-500 border-2 "
             placeholder="Cantidad"
           ></input>
           <textarea
+          
             {...register("descripcion")}
             className="bg-transparent py-3 border-transparent outline-none  border-b-zinc-500 shadow-lg hover:shadow-2xl   rounded-sm p-1 hover:scale-[1.02] transition-all w-[90%] h-28 hover:border-b-zinc-500 border-2 "
             placeholder="Descripcion"
           ></textarea>
           <input
+           
+          
             {...register("precio")}
             type="number"
             className="bg-transparent border-transparent outline-none  border-b-zinc-500 shadow-lg hover:shadow-2xl   rounded-sm p-1 hover:scale-[1.02] transition-all w-[90%] h-10 hover:border-b-zinc-500 border-2 "
@@ -97,14 +128,14 @@ const Product = () => {
           <button
           onClick={handleClick}
             type="submit"
-            className="bg-stone-600 rounded-md p-2  hover:scale-105 shadow-md hover:shadow-xl"
+            className="bg-stone-600 rounded-md p-2  text-stone-200 hover:scale-105 shadow-md hover:shadow-xl"
           >
             Submit
           </button>
           <button
           onClick={handleClickCerrar}
             type="submit"
-            className="bg-stone-600 mx-4 rounded-md p-2  hover:scale-105 shadow-md hover:shadow-xl"
+            className="bg-stone-600 mx-4 rounded-md p-2 text-stone-200 hover:scale-105 shadow-md hover:shadow-xl"
           >
             Cerrar Session
           </button>

@@ -1,5 +1,8 @@
+import { Login } from '@/components/login'
 import './globals.css'
 import type { Metadata } from 'next'
+import Loader from '@/components/Loader'
+
 
 
 
@@ -13,9 +16,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+
   return (
     <html lang="en">
-      <body className='h-screen bg-zinc-300'>{children}</body>
+      <body className=''>
+        
+      
+        {children}</body>
     </html>
   )
 }

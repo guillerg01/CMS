@@ -3,7 +3,7 @@
 import { Button, Checkbox, Label, Modal, TextInput ,DarkThemeToggle} from 'flowbite-react';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-
+import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie';
 
 
@@ -11,13 +11,13 @@ import { useCookies } from 'react-cookie';
 
 
 export const  Login = () =>{
-  const [openModal, setOpenModal] = useState("");
+  const [openModal, setOpenModal] = useState("form-elements");
   const [user, setUser] = useState("");
   const [password, SetPassword] = useState("");
 const[estado,setEstado] = useState("Inicia Session")
 
 const [cookies, setCookie] = useCookies(['token']);
-
+const router = useRouter()
 
 const handleSubmitLogin = ({}) => {
     
@@ -34,6 +34,7 @@ const handleSubmitLogin = ({}) => {
         setCookie('token', `${response.data.token}`, { path: '/' });
          console.log('token: ' +cookies.token);
          
+         router.push('/dashboard')
          setUser("")
          SetPassword("")
         }).catch((e)=>{console.log('error: ' +e);
@@ -62,12 +63,7 @@ const handleSubmitLogin = ({}) => {
 
 
 
-useEffect(()=>{
 
-  if(cookies.token===undefined){
-    setOpenModal('form-elements')
-  }
-},[cookies.token])
 
 
 const handleClickregister = ()=>{
@@ -102,7 +98,7 @@ const handleClickregister = ()=>{
               </div>
               <input    value={password} onChange={(e) => SetPassword(e.target.value)} className=" w-full px-3 h-10 border rounded-md  border-gray-600 bg-transparent " />
             </div>
-            <div className="flex  items-center justify-center ">
+            <div className="flex  Dropdown.Items-center justify-center ">
             
               <Button onClick={estado==="Inicia Session"? handleSubmitLogin :handleSubmitRegister} className="w-full">{estado}</Button>
             
