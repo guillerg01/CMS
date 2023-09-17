@@ -6,21 +6,31 @@ import { useState } from "react";
 
 import Drowdown from "./components/Drowdown";
 import Campos from "./components/campos";
-import { Card } from "flowbite-react";
+import Card from "./components/Card";
+import { useContext } from "react";
+import { apiContext } from "@/context/contextprovider";
+
 const Layout = () => {
-  const [campos, setCampos] = useState([""]);
+  const datacontext = useContext(apiContext);
+  const [campos, setCampos] = useState<String[]>([]);
   const [campo, setCampo] = useState("");
+  const [cantidadCampos, setCantidadCampos] = useState<number>(0);
+  let i = 0;
+
+  console.log(datacontext);
+  
 
   const handlecampo = () => {
     setCampos([...campos, campo]);
-    console.log(campos);
-    
+    console.log("Arreglo local de campos: " + campos);
+    // setData(campos);
+    // console.log("data del contexto : " + data);
   };
   return (
     <div className="flex text-black flex-col-2">
       <div className="w-[25%] h-screen bg-[#E2E2E5] "> </div>
 
-      <div className="w-full h-full ">
+      <div className="w-full h-full flex flex-col">
         <div className="  flex justify-end px-5 py-2 w-full h-16">
           <div className="flex flex-row space-x-2  items-center justify-center">
             <svg
@@ -45,51 +55,49 @@ const Layout = () => {
 
         <div>
           <div className="flex justify-between m-7 text-center bg-[#EDEDF6] bg-opacity-40 rounded-md p-2 shadow-md">
-            <div>
-          <h1 className=" m-2 ">Escriba una cantidad</h1>
-            <input
-              value={campo}
-              onChange={(e: any) => {
-                setCampo(e.target.value);
-              }}
-              type="text"
-              className="p-2 border-0 rounded-md w-72"
-              placeholder="Campo"
-            />
-            <button
-              onClick={handlecampo}
-              className="bg-[#dddde2] hover:animate-spin hover:scale-105 hover:shadow-lg transition-all p-2 rounded-md"
-            >
-              Guardar
-            </button>
+            <div className="space-x-2">
+              <h1 className=" m-2 ">Escriba una cantidad</h1>
+              <input
+                value={cantidadCampos}
+                onChange={(e: any) => {
+                  setCantidadCampos(e.target.value);
+                }}
+                type="text"
+                className="p-2 border-0 rounded-md w-72"
+                placeholder="Campo"
+              />
+              <button
+                onClick={handlecampo}
+                className="bg-[#dddde2]  hover:animate-spin hover:scale-105 hover:shadow-lg transition-all p-2 rounded-md"
+              >
+                Guardar
+              </button>
             </div>
-            <div>
-            <h1 className=" m-2 ">Escriba un nombre</h1>
-            <input
-              value={campo}
-              onChange={(e: any) => {
-                setCampo(e.target.value);
-              }}
-              type="text"
-              className="p-2 border-0 rounded-md w-72"
-              placeholder="Campo"
-            />
-            <button
-              onClick={handlecampo}
-              className="bg-[#dddde2] hover:animate-spin hover:scale-105 hover:shadow-lg transition-all p-2 rounded-md"
-            >
-              Agregar campo
-            </button>
+            <div className="space-x-2">
+              <h1 className=" m-2 ">Escriba un nombre</h1>
+              <input
+                value={campo}
+                onChange={(e: any) => {
+                  setCampo(e.target.value);
+                }}
+                type="text"
+                className="p-2 border-0 rounded-md w-72"
+                placeholder="Campo"
+              />
+              <button
+                onClick={handlecampo}
+                className="bg-[#dddde2] hover:animate-spin hover:scale-105 hover:shadow-lg transition-all p-2 rounded-md"
+              >
+                Agregar campo
+              </button>
             </div>
           </div>
         </div>
-        <Card></Card>
-        {/* <div id="campos" className="grid grid-cols-4 p-10 gap-5">
-          {campos.map((c,i)=>{
-            return(<Card key={i}></Card>)
-          })}
-        </div> */}
         <div></div>
+
+        <div id="campos" className="grid grid-cols-3  gap-5">
+          <Card></Card>
+        </div>
       </div>
     </div>
   );
