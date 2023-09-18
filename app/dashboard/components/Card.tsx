@@ -1,14 +1,14 @@
 import React from 'react'
 import Campo from './Campo'
 import { useContext } from 'react';
-import { apiContext } from '@/context/contextprovider';
+import { ApiContext } from '@/context/contextprovider';
 
 const Card = () => {
 
 
 
 
-  const data = useContext(apiContext)
+  const data = useContext(ApiContext)
   return (<div className="flex flex-col justify-center  px-2">
 
   <div className="mt-8 sm:mx-auto ">

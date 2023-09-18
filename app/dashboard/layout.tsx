@@ -7,24 +7,32 @@ import { useState } from "react";
 import Drowdown from "./components/Drowdown";
 import Campos from "./components/campos";
 import Card from "./components/Card";
-import { useContext } from "react";
-import { apiContext } from "@/context/contextprovider";
+import { useContext,useEffect } from "react";
+import { ApiContext } from "@/context/contextprovider";
 
 const Layout = () => {
-  const datacontext = useContext(apiContext);
-  const [campos, setCampos] = useState<String[]>([]);
+  const {data,updatedata} = useContext(ApiContext);
+  const [campos, setCampos] = useState<string[]>([]);
   const [campo, setCampo] = useState("");
   const [cantidadCampos, setCantidadCampos] = useState<number>(0);
-  let i = 0;
 
-  console.log(datacontext);
-  
+
+//  useEffect(() => {
+//    console.log('cambio la data');
+   
+//  }, [data])
+
+  const logData  = ()=>console.log("Datos del contexto", data)
+
+  const updateCampos = (campo: string) =>{setCampos(campos.concat(campo))}
 
   const handlecampo = () => {
-    setCampos([...campos, campo]);
+    updateCampos(campo)
     console.log("Arreglo local de campos: " + campos);
-    // setData(campos);
-    // console.log("data del contexto : " + data);
+    updatedata(campos);
+    logData()
+   
+    
   };
   return (
     <div className="flex text-black flex-col-2">
